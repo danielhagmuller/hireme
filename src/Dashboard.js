@@ -34,15 +34,20 @@ const Dashboard = () => {
 
   const generateApplication = async () => {
     setLoading(true);
-    
-    // Set the API key if provided
-    if (deepSeekKey) {
-      apiService.setApiKey(deepSeekKey);
-    }
+    setApplication(''); // Clear previous application
     
     try {
-      // This would normally call an AI API to generate the application
+      // Set the API key if provided
+      if (deepSeekKey) {
+        apiService.setApiKey(deepSeekKey);
+      }
+      
+      console.log('Generating application with profile:', skillProfile, 'and job:', { jobLink });
+      
+      // Call the API service to generate the application
       const result = await apiService.generateApplication(skillProfile, { jobLink });
+      
+      console.log('Generation result:', result);
       
       if (result.success) {
         setApplication(result.data.application);
@@ -50,10 +55,11 @@ const Dashboard = () => {
         setApplication(`Error generating application: ${result.error}`);
       }
     } catch (error) {
+      console.error('Generate application error:', error);
       setApplication(`Error generating application: ${error.message}`);
+    } finally {
+      setLoading(false);
     }
-    
-    setLoading(false);
   };
 
   return (

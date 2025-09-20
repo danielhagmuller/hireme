@@ -15,25 +15,46 @@ class ApiService {
   async generateApplication(profileData, jobData) {
     // This would be the actual implementation when we have the API key
     if (!this.apiKey) {
-      // Return a simulated response for now
+      // Simulate network delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Create a more personalized response based on available data
+      const hasLinkedIn = profileData.linkedin?.trim();
+      const hasGitHub = profileData.github?.trim();
+      const hasCustomInfo = profileData.customInput?.trim();
+      const hasJobLink = jobData.jobLink?.trim();
+      
+      let personalizedContent = `Dear Hiring Manager,
+
+I am writing to express my strong interest in this position${hasJobLink ? ' that I found through your job posting' : ''}. Based on my background and experience, I believe I would be an excellent fit for this role.`;
+
+      if (hasCustomInfo) {
+        personalizedContent += `\n\nMy background includes:\n${profileData.customInput}`;
+      } else {
+        personalizedContent += `\n\nMy background includes:
+- Extensive experience in software development
+- Strong problem-solving and analytical skills
+- Proven ability to work effectively in collaborative environments
+- Passion for learning and adapting to new technologies`;
+      }
+
+      if (hasLinkedIn || hasGitHub) {
+        personalizedContent += `\n\nYou can find more details about my professional background`;
+        if (hasLinkedIn) personalizedContent += ` on my LinkedIn profile (${profileData.linkedin})`;
+        if (hasLinkedIn && hasGitHub) personalizedContent += ` and`;
+        if (hasGitHub) personalizedContent += ` in my GitHub portfolio (${profileData.github})`;
+        personalizedContent += `.`;
+      }
+
+      personalizedContent += `\n\nI would welcome the opportunity to discuss how my skills and experiences align with your team's needs. Thank you for your consideration.
+
+Sincerely,
+[Your Name]`;
+
       return {
         success: true,
         data: {
-          application: `Dear Hiring Manager,
-
-I am writing to express my interest in the position at your company. Based on the job requirements and my extensive experience in software development, I believe I would be an excellent fit for this role.
-
-My background includes:
-- Expertise in modern web development technologies
-- Strong problem-solving skills
-- Experience working in collaborative team environments
-
-I have attached my detailed skill profile for your review. I would welcome the opportunity to discuss how my skills and experiences align with your needs.
-
-Thank you for your consideration.
-
-Sincerely,
-Candidate`
+          application: personalizedContent
         }
       };
     }
@@ -80,7 +101,9 @@ Candidate`
 
       return {
         success: true,
-        data: response.data.choices[0].message.content
+        data: {
+          application: response.data.choices[0].message.content
+        }
       };
     } catch (error) {
       return {
