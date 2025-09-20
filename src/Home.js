@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+  useEffect(() => {
+    console.log('Home component mounted');
+  }, []);
+
   return (
     <div className="home-container">
       <header className="home-header">
