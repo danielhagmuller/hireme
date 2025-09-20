@@ -70,7 +70,7 @@ const Dashboard = () => {
             <div className="form-group">
               <label htmlFor="linkedin">LinkedIn Profile URL</label>
               <input
-                type="url"
+                type="text"
                 id="linkedin"
                 value={skillProfile.linkedin}
                 onChange={(e) => setSkillProfile({...skillProfile, linkedin: e.target.value})}
@@ -81,7 +81,7 @@ const Dashboard = () => {
             <div className="form-group">
               <label htmlFor="github">GitHub Profile URL</label>
               <input
-                type="url"
+                type="text"
                 id="github"
                 value={skillProfile.github}
                 onChange={(e) => setSkillProfile({...skillProfile, github: e.target.value})}
@@ -130,7 +130,7 @@ const Dashboard = () => {
             <div className="form-group">
               <label htmlFor="jobLink">Job Posting URL</label>
               <input
-                type="url"
+                type="text"
                 id="jobLink"
                 value={jobLink}
                 onChange={(e) => setJobLink(e.target.value)}
