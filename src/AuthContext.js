@@ -22,21 +22,21 @@ export const AuthProvider = ({ children }) => {
         console.log('AuthContext: Finished checking session');
         setLoading(false);
       }
-
-      console.log('AuthContext: Setting up auth state change listener...');
-      const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-        console.log('AuthContext: Auth state changed:', _event, session);
-        setUser(session?.user || null);
-        setLoading(false);
-      });
-
-      return () => {
-        console.log('AuthContext: Cleaning up subscription');
-        subscription.unsubscribe();
-      };
     };
 
     checkSession();
+
+    console.log('AuthContext: Setting up auth state change listener...');
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('AuthContext: Auth state changed:', _event, session);
+      setUser(session?.user || null);
+      setLoading(false);
+    });
+
+    return () => {
+      console.log('AuthContext: Cleaning up subscription');
+      subscription.unsubscribe();
+    };
   }, []);
 
   const value = {

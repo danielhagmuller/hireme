@@ -33,13 +33,20 @@ const SignUp = () => {
     setError('');
 
     try {
-      const { error } = await signUp({ email, password });
+      const { error } = await signUp({ 
+        email, 
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/confirm-email`
+        }
+      });
       
       if (error) {
         setError(error.message);
       } else {
-        // User signed up successfully
-        navigate('/dashboard');
+        // Show success message instead of redirecting
+        setError('');
+        alert('Please check your email and click the confirmation link to complete your registration.');
       }
     } catch (error) {
       setError('Failed to create an account');
