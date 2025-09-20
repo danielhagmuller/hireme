@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './AuthContext';
 import Login from './Login';
@@ -9,6 +9,10 @@ import ErrorBoundary from './ErrorBoundary';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    console.log('App component mounted');
+  }, []);
+
   return (
     <ErrorBoundary>
       <AuthProvider>
@@ -29,6 +33,8 @@ function App() {
 
 function PrivateRoute({ children }) {
   const { user } = useAuth();
+  
+  console.log('PrivateRoute: Checking user authentication', user);
   
   return user ? children : <Navigate to="/login" />;
 }
